@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0d0f14">
+<meta name="color-scheme" content="dark">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Zancada">
+<meta name="format-detection" content="telephone=no">
+<title>Zancada</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<link rel="icon" type="image/png" href="data:image/png;base64,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">
+<style>
+:root{
+  --bg:#0d0f14;--card:#171a21;--card2:#1f232c;--line:#2a2f3a;
+  --tx:#f2f4f8;--mu:#9aa3b2;--fa:#6b7383;
+  --ac:#ff7a45;--acTx:#1b0c05;--bad:#ff5a5f;
+  --sat:env(safe-area-inset-top,0px);--sab:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--tx);
+  font:16px/1.4 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,system-ui,sans-serif;
+  -webkit-text-size-adjust:100%;text-size-adjust:100%;overscroll-behavior:none}
+body{position:fixed;inset:0;overflow:hidden;-webkit-user-select:none;user-select:none}
+input,textarea{-webkit-user-select:text;user-select:text}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+h1,h2,h3,p{margin:0}
+.hidden{display:none!important}
+
+/* ---------- Splash ---------- */
+#splash{position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:18px;transition:opacity .35s}
+#splash.hide{opacity:0;pointer-events:none}
+#splash svg{width:104px;height:104px;animation:pop .6s ease-out}
+#splash .app-name{font-size:30px;font-weight:800;letter-spacing:-.5px}
+#splash small{color:var(--mu);font-size:14px;margin-top:-10px}
+@keyframes pop{from{transform:scale(.8);opacity:0}to{transform:none;opacity:1}}
+
+/* ---------- Girar móvil ---------- */
+#rotate{display:none;position:fixed;inset:0;z-index:200;background:var(--bg);color:var(--mu);
+  align-items:center;justify-content:center;text-align:center;padding:24px;font-size:18px}
+@media (orientation:landscape) and (max-height:540px){#rotate{display:flex}}
+
+/* ---------- Layout ---------- */
+#app{position:absolute;inset:0;display:flex;flex-direction:column}
+header{display:flex;align-items:center;gap:10px;padding:calc(var(--sat) + 12px) 16px 10px}
+header svg{width:34px;height:34px;flex:none}
+header .app-name{font-size:22px;font-weight:800;letter-spacing:-.3px;flex:1}
+.hbtn{min-height:44px;padding:0 14px;border-radius:12px;background:var(--card);color:var(--mu);font-size:15px;font-weight:600}
+.hbtn.on{color:var(--tx);background:var(--card2)}
+main{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:4px 16px 28px}
+main::-webkit-scrollbar,.sheet-body::-webkit-scrollbar{display:none}
+main,.sheet-body{scrollbar-width:none}
+.view{display:none}
+.view.active{display:block;animation:fade .2s}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.vtitle{font-size:28px;font-weight:800;letter-spacing:-.5px;margin:6px 2px 14px}
+
+nav{display:flex;align-items:center;justify-content:space-around;padding:6px 6px calc(var(--sab) + 6px);
+  background:#0d0f14f2;border-top:1px solid var(--line)}
+nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;min-height:58px;justify-content:center;
+  color:var(--fa);font-size:11.5px;font-weight:600;border-radius:14px}
+nav button svg{width:26px;height:26px}
+nav button.on{color:var(--tx)}
+nav button.on svg{color:var(--ac)}
+nav .plus{flex:none;width:62px;height:62px;min-height:0;border-radius:50%;background:var(--ac);color:var(--acTx);margin:0 4px;
+  box-shadow:0 6px 20px #ff7a4540}
+nav .plus svg{width:30px;height:30px}
+nav .plus:active{transform:scale(.94)}
+.ico{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* ---------- Tarjetas ---------- */
+.card{background:var(--card);border-radius:20px;padding:16px 18px;margin-bottom:12px}
+.card-h{display:flex;justify-content:space-between;align-items:baseline;color:var(--mu);font-size:14px;font-weight:600}
+.card-h small{color:var(--fa);font-weight:500;font-size:13px}
+.big{font-size:40px;font-weight:800;letter-spacing:-1px;line-height:1.1;margin:6px 0 12px;font-variant-numeric:tabular-nums}
+.big u,.run-km u{text-decoration:none;font-size:.45em;font-weight:600;color:var(--mu);letter-spacing:0;margin-left:3px}
+.row3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;border-top:1px solid var(--line);padding-top:12px}
+.row3 b{display:block;font-size:17px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.row3 small{color:var(--mu);font-size:12.5px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:58px;border-radius:16px;
+  font-size:17px;font-weight:700;background:var(--card2);color:var(--tx)}
+.btn:active{transform:scale(.98)}
+.btn.pri{background:var(--ac);color:var(--acTx)}
+.btn.danger{background:#ff5a5f1f;color:var(--bad)}
+.btn+.btn{margin-top:10px}
+.empty{text-align:center;color:var(--mu);padding:36px 20px}
+.empty svg{width:64px;height:64px;opacity:.6;margin-bottom:10px}
+.muted{color:var(--mu)}
+.note-s{color:var(--fa);font-size:13px;margin:4px 4px 16px;line-height:1.45}
+
+/* ---------- Historial ---------- */
+.mhead{display:flex;justify-content:space-between;color:var(--mu);font-size:13px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.6px;margin:18px 4px 8px}
+.mhead:first-child{margin-top:0}
+.run{background:var(--card);border-radius:18px;padding:14px 16px;margin-bottom:10px}
+.run-top{display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
+.run-date{color:var(--mu);font-size:13.5px;font-weight:600}
+.run-km{font-size:28px;font-weight:800;letter-spacing:-.5px;font-variant-numeric:tabular-nums}
+.run-right{text-align:right}
+.run-right b{font-size:19px;font-variant-numeric:tabular-nums}
+.run-right small{display:block;color:var(--mu);font-size:13px;font-variant-numeric:tabular-nums}
+.run-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;align-items:center}
+.tag{background:var(--card2);color:var(--tx);font-size:12.5px;font-weight:600;padding:4px 10px;border-radius:99px}
+.tag.comp{background:#ff7a4526;color:var(--ac)}
+.run-note{color:var(--mu);font-size:14.5px;margin-top:8px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;white-space:pre-wrap}
+.run.open .run-note{-webkit-line-clamp:unset;display:block}
+.run-actions{display:none;gap:10px;margin-top:12px}
+.run.open .run-actions{display:flex}
+.run-actions .btn{min-height:50px;font-size:16px}
+.run-actions .btn+.btn{margin-top:0}
+
+/* ---------- Récords ---------- */
+.rec{display:flex;align-items:center;gap:14px;background:var(--card);border-radius:18px;padding:14px 16px;margin-bottom:10px}
+.rec-ic{width:46px;height:46px;border-radius:14px;background:var(--card2);display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:14px;color:var(--ac);flex:none}
+.rec-ic svg{width:24px;height:24px}
+.rec-body{flex:1;min-width:0}
+.rec-l{color:var(--mu);font-size:13.5px;font-weight:600}
+.rec-v{font-size:24px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.3px}
+.rec-v.none{color:var(--fa);font-size:18px;font-weight:600}
+.rec-s{color:var(--fa);font-size:13px}
+
+/* ---------- Gráficas ---------- */
+.chart-card{padding:16px 12px 10px}
+.chart-card .card-h{padding:0 6px}
+.readout{min-height:42px;padding:6px 6px 0}
+.readout b{font-size:22px;font-variant-numeric:tabular-nums}
+.readout span{color:var(--mu);font-size:13.5px;margin-left:6px}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart text{fill:var(--fa);font-size:10.5px;font-family:inherit;font-variant-numeric:tabular-nums}
+.grid{stroke:var(--line);stroke-width:1}
+.hit{fill:transparent;cursor:pointer}
+
+/* ---------- Hoja de formulario ---------- */
+.sheet{position:fixed;inset:0;z-index:50;background:var(--bg);display:flex;flex-direction:column;
+  transform:translateY(102%);transition:transform .28s cubic-bezier(.2,.8,.2,1);visibility:hidden}
+.sheet.open{transform:none;visibility:visible}
+.sheet-head{display:flex;align-items:center;justify-content:space-between;padding:calc(var(--sat) + 10px) 12px 8px 18px}
+.sheet-head h2{font-size:24px;font-weight:800;letter-spacing:-.4px}
+.xbtn{width:48px;height:48px;border-radius:50%;background:var(--card);color:var(--mu);display:flex;align-items:center;justify-content:center}
+.xbtn svg{width:22px;height:22px}
+.sheet-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:6px 16px calc(var(--sab) + 28px)}
+.field{margin-bottom:18px}
+.field>label,.flabel{display:block;color:var(--mu);font-size:14px;font-weight:600;margin:0 4px 8px}
+.inp{display:block;width:100%;min-height:58px;padding:0 16px;border-radius:16px;border:1.5px solid var(--line);background:var(--card);
+  color:var(--tx);font-size:20px;font-weight:600;font-family:inherit;-webkit-appearance:none;appearance:none;outline:none}
+.inp:focus{border-color:var(--ac)}
+.inp::placeholder{color:#4a5160}
+input[type=date].inp{line-height:58px;text-align:left}
+input[type=date]::-webkit-date-and-time-value{text-align:left}
+input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.7)}
+textarea.inp{min-height:96px;padding:14px 16px;font-size:17px;font-weight:500;resize:none;line-height:1.4}
+.unit{position:relative}
+.unit span{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--mu);font-weight:600;pointer-events:none}
+.time{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.time .inp{text-align:center;padding:0 26px 0 8px}
+.time .unit span{right:12px;font-size:14px}
+.chips{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.chip{min-height:52px;border-radius:14px;background:var(--card);border:1.5px solid var(--line);font-size:16px;font-weight:600;color:var(--mu)}
+.chip.on{border-color:var(--ac);color:var(--tx);background:#ff7a4518}
+.preview{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:4px 0 18px}
+.preview div{background:var(--card);border-radius:16px;padding:12px 16px}
+.preview small{display:block;color:var(--mu);font-size:13px;font-weight:600}
+.preview b{font-size:24px;font-variant-numeric:tabular-nums}
+.err{color:var(--bad);font-size:15px;font-weight:600;margin:0 4px 14px;min-height:0}
+
+/* ---------- Modal y toast ---------- */
+#modal{position:fixed;inset:0;z-index:80;background:#000a;display:flex;align-items:flex-end;justify-content:center;
+  padding:16px 12px calc(var(--sab) + 16px);opacity:0;pointer-events:none;transition:opacity .2s}
+#modal.open{opacity:1;pointer-events:auto}
+.mbox{width:100%;max-width:480px;background:var(--card);border-radius:24px;padding:22px 18px 18px;transform:translateY(20px);transition:transform .2s}
+#modal.open .mbox{transform:none}
+.mbox h3{font-size:20px;margin-bottom:8px}
+.mbox p{color:var(--mu);margin-bottom:18px;white-space:pre-line}
+.mbox .btn{background:var(--card2)}
+.mbox .btn.pri{background:var(--ac)}
+.mbox .btn.danger{background:#ff5a5f26}
+#toast{position:fixed;left:50%;bottom:calc(var(--sab) + 92px);transform:translate(-50%,20px);z-index:90;background:var(--tx);color:var(--bg);
+  font-weight:700;padding:12px 20px;border-radius:99px;opacity:0;transition:.25s;pointer-events:none;white-space:nowrap;font-size:15px}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+
+<!-- Logo (se reutiliza en splash y cabecera) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="logo" viewBox="0 0 100 100">
+    <rect width="100" height="100" rx="24" fill="#171a21"/>
+    <path d="M30 70 C30 54 50 60 51 47 S62 31 70 30" fill="none" stroke="#ff7a45" stroke-width="8" stroke-linecap="round"/>
+    <circle cx="30" cy="70" r="6.5" fill="#171a21" stroke="#f2f4f8" stroke-width="4"/>
+    <circle cx="70" cy="30" r="8" fill="#f2f4f8"/>
+  </symbol>
+</svg>
+
+<div id="splash">
+  <svg><use href="#logo"/></svg>
+  <div class="app-name">Zancada</div>
+  <small>Tu registro de carreras</small>
+</div>
+
+<div id="rotate">Gira el móvil a vertical para usar la app.</div>
+
+<div id="app">
+  <header>
+    <svg><use href="#logo"/></svg>
+    <div class="app-name">Zancada</div>
+    <button class="hbtn" id="btn-datos" data-go="datos">Copia</button>
+  </header>
+
+  <main id="main">
+    <!-- RESUMEN -->
+    <section class="view active" id="v-resumen">
+      <div id="resumen"></div>
+    </section>
+
+    <!-- HISTORIAL -->
+    <section class="view" id="v-historial">
+      <h1 class="vtitle">Historial</h1>
+      <div id="historial"></div>
+    </section>
+
+    <!-- RÉCORDS -->
+    <section class="view" id="v-records">
+      <h1 class="vtitle">Récords personales</h1>
+      <div id="records"></div>
+    </section>
+
+    <!-- GRÁFICAS -->
+    <section class="view" id="v-graficas">
+      <h1 class="vtitle">Gráficas</h1>
+      <div id="graficas"></div>
+    </section>
+
+    <!-- DATOS -->
+    <section class="view" id="v-datos">
+      <h1 class="vtitle">Copia de seguridad</h1>
+      <div class="card">
+        <p class="muted" style="margin-bottom:6px">Tus carreras se guardan solo en este móvil. Si borras los datos del navegador o cambias de teléfono, se pierden. Exporta una copia de vez en cuando.</p>
+        <p class="muted" id="datos-info" style="margin-bottom:16px"></p>
+        <button class="btn pri" id="btn-export">Exportar copia (JSON)</button>
+        <button class="btn" id="btn-import">Importar copia (JSON)</button>
+        <input type="file" id="file" accept="application/json,.json" class="hidden">
+      </div>
+      <div class="card">
+        <button class="btn danger" id="btn-wipe">Borrar todos los datos</button>
+      </div>
+      <p class="note-s" id="version"></p>
+    </section>
+  </main>
+
+  <nav>
+    <button data-go="resumen" class="on">
+      <svg class="ico" viewBox="0 0 24 24"><path d="M4 20V13M10 20V8M16 20V11M22 20H2M20 20V4"/></svg>Resumen</button>
+    <button data-go="historial">
+      <svg class="ico" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></svg>Historial</button>
+    <button class="plus" id="btn-add" aria-label="Nueva carrera">
+      <svg class="ico" viewBox="0 0 24 24" style="stroke-width:2.6"><path d="M12 5v14M5 12h14"/></svg></button>
+    <button data-go="records">
+      <svg class="ico" viewBox="0 0 24 24"><path d="M8 4h8v6a4 4 0 0 1-8 0V4zM8 6H5v1a3 3 0 0 0 3 3M16 6h3v1a3 3 0 0 1-3 3M12 14v4M8 21h8M9.5 18h5"/></svg>Récords</button>
+    <button data-go="graficas">
+      <svg class="ico" viewBox="0 0 24 24"><path d="M3 17l5-5 4 3 8-8M15 7h5v5"/></svg>Gráficas</button>
+  </nav>
+</div>
+
+<!-- Formulario nueva / editar carrera -->
+<div class="sheet" id="sheet" aria-hidden="true">
+  <div class="sheet-head">
+    <h2 id="f-title">Nueva carrera</h2>
+    <button class="xbtn" id="f-close" aria-label="Cerrar">
+      <svg class="ico" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div class="sheet-body">
+    <form id="form" autocomplete="off" novalidate>
+      <div class="field">
+        <label for="f-date">Fecha</label>
+        <input class="inp" type="date" id="f-date" required>
+      </div>
+      <div class="field">
+        <label for="f-km">Distancia</label>
+        <div class="unit"><input class="inp" type="text" inputmode="decimal" id="f-km" placeholder="0,00" enterkeyhint="next"><span>km</span></div>
+      </div>
+      <div class="field">
+        <span class="flabel">Tiempo total</span>
+        <div class="time">
+          <div class="unit"><input class="inp" type="text" inputmode="numeric" pattern="[0-9]*" id="f-h" placeholder="0" maxlength="2" aria-label="Horas"><span>h</span></div>
+          <div class="unit"><input class="inp" type="text" inputmode="numeric" pattern="[0-9]*" id="f-m" placeholder="00" maxlength="2" aria-label="Minutos"><span>min</span></div>
+          <div class="unit"><input class="inp" type="text" inputmode="numeric" pattern="[0-9]*" id="f-s" placeholder="00" maxlength="2" aria-label="Segundos"><span>s</span></div>
+        </div>
+      </div>
+      <div class="preview">
+        <div><small>Ritmo medio</small><b id="p-pace">–</b></div>
+        <div><small>Velocidad</small><b id="p-speed">–</b></div>
+      </div>
+      <div class="field">
+        <span class="flabel">Tipo (opcional)</span>
+        <div class="chips" id="f-tipos"></div>
+      </div>
+      <div class="field">
+        <label for="f-nota">Sensaciones / nota (opcional)</label>
+        <textarea class="inp" id="f-nota" rows="3" placeholder="¿Cómo te has sentido?" maxlength="1000"></textarea>
+      </div>
+      <p class="err" id="f-err"></p>
+      <button class="btn pri" type="submit">Guardar carrera</button>
+    </form>
+  </div>
+</div>
+
+<div id="modal"><div class="mbox"><h3 id="m-title"></h3><p id="m-text"></p><div id="m-btns"></div></div></div>
+<div id="toast"></div>
+
+<script>
+'use strict';
+/* =====================================================================
+   NOMBRE DE LA APP
+   El nombre se lee de manifest.webmanifest ("name"). Para cambiarlo,
+   edita solo ese archivo. Este valor es únicamente el de reserva.
+   ===================================================================== */
+const NOMBRE_RESERVA = 'Zancada';
+const VERSION = '1.0.0';
+
+const KEY = 'correr.carreras.v1';
+const KEY_BACKUP = 'correr.ultimaCopia';
+const TIPOS = ['Rodaje', 'Series', 'Tirada larga', 'Competición'];
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+let NOMBRE = NOMBRE_RESERVA;
+
+/* ---------- Nombre ---------- */
+function setNombre(n) {
+  if (!n) return;
+  NOMBRE = n;
+  document.title = n;
+  $$('.app-name').forEach(e => e.textContent = n);
+  const m = document.querySelector('meta[name="apple-mobile-web-app-title"]');
+  if (m) m.content = n;
+}
+fetch('manifest.webmanifest').then(r => r.json()).then(m => setNombre(m.name || m.short_name)).catch(() => {});
+
+/* ---------- Datos ---------- */
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+const valid = r => r && typeof r.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(r.date) &&
+  Number.isFinite(r.km) && r.km > 0 && Number.isFinite(r.sec) && r.sec > 0;
+function load() {
+  try { const a = JSON.parse(localStorage.getItem(KEY) || '[]'); return Array.isArray(a) ? a.filter(valid) : []; }
+  catch (e) { return []; }
+}
+let runs = load();
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(runs)); }
+  catch (e) { modal({ title: 'No se pudo guardar', text: 'El almacenamiento del móvil está lleno o bloqueado.', buttons: [{ label: 'Vale', value: 1, cls: 'pri' }] }); }
+}
+const sorted = () => [...runs].sort((a, b) => b.date.localeCompare(a.date) || (b.creado || 0) - (a.creado || 0));
+
+/* ---------- Fechas ---------- */
+const pad = n => String(n).padStart(2, '0');
+const iso = d => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+const parseD = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+const hoy = () => iso(new Date());
+const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+function weekStart(d) { const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); x.setDate(x.getDate() - (x.getDay() + 6) % 7); return x; }
+const MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+const MESL = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+const DIA = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
+const fFecha = s => { const d = parseD(s); return DIA[d.getDay()] + ' ' + d.getDate() + ' ' + MES[d.getMonth()] + ' ' + d.getFullYear(); };
+const fCorta = d => d.getDate() + ' ' + MES[d.getMonth()];
+
+/* ---------- Formatos ---------- */
+const nf1 = new Intl.NumberFormat('es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const nf2 = new Intl.NumberFormat('es-ES', { maximumFractionDigits: 2 });
+const fKm = k => nf2.format(Math.round(k * 100) / 100);
+const fKm1 = k => nf1.format(k);
+function fDur(sec) { sec = Math.round(sec); const h = Math.floor(sec / 3600), m = Math.floor(sec % 3600 / 60), s = sec % 60; return h ? h + ':' + pad(m) + ':' + pad(s) : m + ':' + pad(s); }
+function fDurL(sec) { const t = Math.round(sec / 60), h = Math.floor(t / 60), m = t % 60; return h ? h + ' h ' + pad(m) + ' min' : m + ' min'; }
+function fRitmo(spk) { if (!spk || !isFinite(spk)) return '–'; const s = Math.round(spk); return Math.floor(s / 60) + ':' + pad(s % 60); }
+const fVel = (km, sec) => fKm1(km / (sec / 3600));
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const numKm = v => parseFloat(String(v).trim().replace(',', '.'));
+function agg(list) { const km = list.reduce((a, r) => a + r.km, 0), sec = list.reduce((a, r) => a + r.sec, 0); return { n: list.length, km, sec, pace: km ? sec / km : 0 }; }
+
+/* ---------- Navegación ---------- */
+let vista = 'resumen';
+function go(v) {
+  vista = v;
+  $$('.view').forEach(e => e.classList.toggle('active', e.id === 'v-' + v));
+  $$('nav [data-go]').forEach(b => b.classList.toggle('on', b.dataset.go === v));
+  $('#btn-datos').classList.toggle('on', v === 'datos');
+  $('#main').scrollTop = 0;
+  if (v === 'graficas') renderGraficas();
+}
+$$('[data-go]').forEach(b => b.addEventListener('click', () => go(b.dataset.go)));
+
+/* ---------- Resumen ---------- */
+const ICON_RUN = '<svg viewBox="0 0 100 100"><use href="#logo"/></svg>';
+function statCard(titulo, rango, list) {
+  const a = agg(list);
+  return `<div class="card">
+    <div class="card-h"><span>${titulo}</span><small>${rango}</small></div>
+    <div class="big">${fKm1(a.km)}<u>km</u></div>
+    <div class="row3">
+      <div><b>${a.n}</b><small>${a.n === 1 ? 'salida' : 'salidas'}</small></div>
+      <div><b>${a.n ? fDurL(a.sec) : '–'}</b><small>tiempo</small></div>
+      <div><b>${fRitmo(a.pace)}</b><small>ritmo /km</small></div>
+    </div></div>`;
+}
+function renderResumen() {
+  const el = $('#resumen');
+  if (!runs.length) {
+    el.innerHTML = `<h1 class="vtitle">Resumen</h1><div class="empty">${ICON_RUN}<p>Aún no hay carreras.<br>Registra la primera y aquí verás tus kilómetros de la semana, el mes y el año.</p></div>
+      <button class="btn pri" onclick="openForm()">Registrar carrera</button>`;
+    return;
+  }
+  const now = new Date(), ws = weekStart(now), we = addDays(ws, 6);
+  const wsI = iso(ws), weI = iso(we), mes = iso(now).slice(0, 7), anio = iso(now).slice(0, 4);
+  const sem = runs.filter(r => r.date >= wsI && r.date <= weI);
+  const mesL = runs.filter(r => r.date.slice(0, 7) === mes);
+  const anioL = runs.filter(r => r.date.slice(0, 4) === anio);
+  const last = sorted()[0];
+  const tot = agg(runs);
+  el.innerHTML = `<h1 class="vtitle">Resumen</h1>
+    ${statCard('Esta semana', fCorta(ws) + ' – ' + fCorta(we), sem)}
+    ${statCard('Este mes', MESL[now.getMonth()] + ' ' + anio, mesL)}
+    ${statCard('Este año', anio, anioL)}
+    <div class="card">
+      <div class="card-h"><span>Última carrera</span><small>${fFecha(last.date)}</small></div>
+      <div class="big">${fKm(last.km)}<u>km</u></div>
+      <div class="row3">
+        <div><b>${fDur(last.sec)}</b><small>tiempo</small></div>
+        <div><b>${fRitmo(last.sec / last.km)}</b><small>ritmo /km</small></div>
+        <div><b>${fVel(last.km, last.sec)}</b><small>km/h</small></div>
+      </div></div>
+    <p class="note-s">En total: ${tot.n} ${tot.n === 1 ? 'salida' : 'salidas'}, ${fKm1(tot.km)} km en ${fDurL(tot.sec)} (ritmo medio ${fRitmo(tot.pace)} /km).</p>`;
+}
+
+/* ---------- Historial ---------- */
+function renderHistorial() {
+  const el = $('#historial');
+  if (!runs.length) { el.innerHTML = `<div class="empty">${ICON_RUN}<p>Todavía no has registrado ninguna carrera.</p></div>`; return; }
+  let html = '', cur = '';
+  const list = sorted();
+  const porMes = {};
+  list.forEach(r => { const k = r.date.slice(0, 7); porMes[k] = (porMes[k] || 0) + r.km; });
+  for (const r of list) {
+    const k = r.date.slice(0, 7);
+    if (k !== cur) {
+      cur = k;
+      const [y, m] = k.split('-').map(Number);
+      html += `<div class="mhead"><span>${MESL[m - 1]} ${y}</span><span>${fKm1(porMes[k])} km</span></div>`;
+    }
+    html += `<div class="run" data-id="${esc(r.id)}">
+      <div class="run-top">
+        <div><div class="run-date">${fFecha(r.date)}</div><div class="run-km">${fKm(r.km)}<u>km</u></div></div>
+        <div class="run-right"><b>${fDur(r.sec)}</b><small>${fRitmo(r.sec / r.km)} /km · ${fVel(r.km, r.sec)} km/h</small></div>
+      </div>
+      ${r.tipo ? `<div class="run-meta"><span class="tag${r.tipo === 'Competición' ? ' comp' : ''}">${esc(r.tipo)}</span></div>` : ''}
+      ${r.nota ? `<div class="run-note">${esc(r.nota)}</div>` : ''}
+      <div class="run-actions">
+        <button class="btn" data-act="edit">Editar</button>
+        <button class="btn danger" data-act="del">Borrar</button>
+      </div></div>`;
+  }
+  el.innerHTML = html;
+}
+$('#historial').addEventListener('click', async e => {
+  const card = e.target.closest('.run'); if (!card) return;
+  const r = runs.find(x => x.id === card.dataset.id); if (!r) return;
+  const act = e.target.closest('[data-act]')?.dataset.act;
+  if (act === 'edit') return openForm(r);
+  if (act === 'del') {
+    const ok = await modal({ title: '¿Borrar carrera?', text: `${fFecha(r.date)} · ${fKm(r.km)} km · ${fDur(r.sec)}\nEsta acción no se puede deshacer.`,
+      buttons: [{ label: 'Borrar', value: true, cls: 'danger' }, { label: 'Cancelar', value: false }] });
+    if (ok) { runs = runs.filter(x => x.id !== r.id); save(); renderAll(); toast('Carrera borrada'); }
+    return;
+  }
+  const was = card.classList.contains('open');
+  $$('.run.open').forEach(c => c.classList.remove('open'));
+  if (!was) card.classList.add('open');
+});
+
+/* ---------- Récords ---------- */
+const DISTANCIAS = [
+  { ic: '5K', l: 'Mejor 5 km', d: 5 },
+  { ic: '10K', l: 'Mejor 10 km', d: 10 },
+  { ic: '21K', l: 'Mejor media maratón (21 km)', d: 21.0975 },
+  { ic: '42K', l: 'Mejor maratón (42 km)', d: 42.195 },
+];
+function recCard(ic, label, valor, sub) {
+  return `<div class="rec"><div class="rec-ic">${ic}</div><div class="rec-body">
+    <div class="rec-l">${label}</div>
+    <div class="rec-v${valor ? '' : ' none'}">${valor || 'Sin marca todavía'}</div>
+    ${sub ? `<div class="rec-s">${sub}</div>` : ''}</div></div>`;
+}
+function renderRecords() {
+  const el = $('#records');
+  if (!runs.length) { el.innerHTML = `<div class="empty">${ICON_RUN}<p>Tus récords aparecerán aquí cuando registres carreras.</p></div>`; return; }
+  const icLong = '<svg class="ico" viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6"/></svg>';
+  const icPace = '<svg class="ico" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>';
+  const longest = runs.reduce((a, r) => r.km > a.km || (r.km === a.km && r.date < a.date) ? r : a);
+  const conRitmo = runs.filter(r => r.km >= 1);
+  const best = conRitmo.length ? conRitmo.reduce((a, r) => r.sec / r.km < a.sec / a.km ? r : a) : null;
+  let html = recCard(icLong, 'Carrera más larga', fKm(longest.km) + ' km', `${fFecha(longest.date)} · ${fDur(longest.sec)}`);
+  html += recCard(icPace, 'Mejor ritmo medio', best ? fRitmo(best.sec / best.km) + ' /km' : '',
+    best ? `${fFecha(best.date)} · ${fKm(best.km)} km · ${fVel(best.km, best.sec)} km/h` : 'Solo carreras de 1 km o más');
+  for (const D of DISTANCIAS) {
+    // Cuentan carreras de esa distancia (desde un 1 % menos hasta un 15 % más).
+    // Si la carrera fue más larga, se estima el tiempo con su ritmo medio.
+    const cands = runs.filter(r => r.km >= D.d * 0.99 && r.km <= D.d * 1.15).map(r => {
+      const exacta = r.km <= D.d * 1.01;
+      return { r, t: exacta ? r.sec : r.sec / r.km * D.d, exacta };
+    });
+    if (!cands.length) { html += recCard(D.ic, D.l, '', ''); continue; }
+    const b = cands.reduce((a, c) => c.t < a.t ? c : a);
+    html += recCard(D.ic, D.l, fDur(b.t), `${fFecha(b.r.date)} · ${fRitmo(b.t / D.d)} /km${b.exacta ? '' : ` · estimado de ${fKm(b.r.km)} km`}`);
+  }
+  html += `<p class="note-s">Las marcas por distancia usan carreras de esa distancia o un poco más largas (hasta un 15 %). En las más largas, el tiempo se estima con tu ritmo medio.</p>`;
+  el.innerHTML = html;
+}
+
+/* ---------- Gráficas (SVG) ---------- */
+function niceStep(raw, steps) { for (const s of steps) if (raw <= s) return s; return steps[steps.length - 1]; }
+function roundTopBar(x, y, w, h) {
+  if (h <= 0) return '';
+  const r = Math.min(4, h, w / 2);
+  return `M${x},${y + h}V${y + r}Q${x},${y} ${x + r},${y}H${x + w - r}Q${x + w},${y} ${x + w},${y + r}V${y + h}Z`;
+}
+let selSem = null, selRit = null;
+function renderGraficas() {
+  const el = $('#graficas');
+  if (!runs.length) { el.innerHTML = `<div class="empty">${ICON_RUN}<p>Cuando tengas carreras registradas verás aquí tus kilómetros por semana y la evolución del ritmo.</p></div>`; return; }
+  el.innerHTML = `<div class="card chart-card">
+      <div class="card-h"><span>Km por semana</span><small>últimas 12 semanas</small></div>
+      <div class="readout" id="ro-sem"></div><div class="chart" id="ch-sem"></div></div>
+    <div class="card chart-card">
+      <div class="card-h"><span>Evolución del ritmo</span><small id="rit-sub"></small></div>
+      <div class="readout" id="ro-rit"></div><div class="chart" id="ch-rit"></div></div>
+    <p class="note-s">Toca una barra o un punto para ver el detalle. En el ritmo, más arriba es más rápido.</p>`;
+  chartSemanas(); chartRitmo();
+}
+function chartSemanas() {
+  const N = 12, cur = weekStart(new Date());
+  const weeks = [];
+  for (let i = N - 1; i >= 0; i--) { const s = addDays(cur, -7 * i); weeks.push({ s, sI: iso(s), eI: iso(addDays(s, 6)), km: 0, n: 0 }); }
+  for (const r of runs) for (const w of weeks) if (r.date >= w.sI && r.date <= w.eI) { w.km += r.km; w.n++; }
+  const W = 340, H = 190, L = 30, R = 4, T = 8, B = 24, pw = W - L - R, ph = H - T - B;
+  const mx = Math.max(...weeks.map(w => w.km), 1);
+  const step = niceStep(mx / 4, [1, 2, 5, 10, 15, 20, 25, 50, 100, 200]);
+  const top = Math.ceil(mx / step) * step;
+  const y = v => T + ph - v / top * ph;
+  const slot = pw / N, bw = Math.max(6, slot - 6);
+  if (selSem === null || selSem >= N) selSem = N - 1;
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Kilómetros por semana">`;
+  for (let v = 0; v <= top + 1e-9; v += step) s += `<line class="grid" x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}"/><text x="${L - 6}" y="${y(v) + 3.5}" text-anchor="end">${nf2.format(v)}</text>`;
+  weeks.forEach((w, i) => {
+    const x = L + i * slot + (slot - bw) / 2, h = ph - (y(w.km) - T);
+    s += `<path d="${roundTopBar(x, y(w.km), bw, h)}" fill="#ff7a45" opacity="${i === selSem ? 1 : .55}"/>`;
+    if ((N - 1 - i) % 3 === 0) s += `<text x="${x + bw / 2}" y="${H - 6}" text-anchor="middle">${i === N - 1 ? 'Esta' : fCorta(w.s)}</text>`;
+    s += `<rect class="hit" data-i="${i}" x="${L + i * slot}" y="${T}" width="${slot}" height="${ph + B}"/>`;
+  });
+  s += '</svg>';
+  const box = $('#ch-sem'); box.innerHTML = s;
+  const w = weeks[selSem];
+  $('#ro-sem').innerHTML = `<b>${fKm1(w.km)} km</b><span>${selSem === N - 1 ? 'Esta semana' : 'Semana del ' + fCorta(w.s)} · ${w.n} ${w.n === 1 ? 'salida' : 'salidas'}</span>`;
+  box.querySelectorAll('.hit').forEach(h => h.addEventListener('click', () => { selSem = +h.dataset.i; chartSemanas(); }));
+}
+function chartRitmo() {
+  const pts = [...runs].filter(r => r.km >= 1).sort((a, b) => a.date.localeCompare(b.date) || (a.creado || 0) - (b.creado || 0)).slice(-20);
+  const box = $('#ch-rit');
+  $('#rit-sub').textContent = pts.length ? `últimas ${pts.length} carreras` : '';
+  if (pts.length < 2) { $('#ro-rit').innerHTML = ''; box.innerHTML = '<p class="muted" style="padding:10px 6px 14px">Necesitas al menos 2 carreras de 1 km o más.</p>'; return; }
+  const W = 340, H = 190, L = 34, R = 10, T = 12, B = 24, pw = W - L - R, ph = H - T - B;
+  const p = pts.map(r => r.sec / r.km);
+  const mn = Math.min(...p), mx = Math.max(...p);
+  const step = niceStep(Math.max(mx - mn, 1) / 3, [5, 10, 15, 30, 60, 120, 300]);
+  let lo = Math.floor(mn / step) * step, hi = Math.ceil(mx / step) * step;
+  if (hi === lo) { lo -= step; hi += step; }
+  const y = v => T + (v - lo) / (hi - lo) * ph;           // más rápido (menos s/km) arriba
+  const slot = pw / (pts.length - 1);
+  const x = i => L + i * slot;
+  if (selRit === null || selRit >= pts.length) selRit = pts.length - 1;
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Evolución del ritmo">`;
+  for (let v = lo; v <= hi + 1e-9; v += step) s += `<line class="grid" x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}"/><text x="${L - 6}" y="${y(v) + 3.5}" text-anchor="end">${fRitmo(v)}</text>`;
+  s += `<path d="${p.map((v, i) => (i ? 'L' : 'M') + x(i).toFixed(1) + ',' + y(v).toFixed(1)).join('')}" fill="none" stroke="#ff7a45" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+  s += `<line x1="${x(selRit)}" x2="${x(selRit)}" y1="${T}" y2="${T + ph}" stroke="#9aa3b2" stroke-width="1" stroke-dasharray="3 3"/>`;
+  p.forEach((v, i) => { s += `<circle cx="${x(i)}" cy="${y(v)}" r="${i === selRit ? 6 : 4}" fill="#ff7a45" stroke="#171a21" stroke-width="2"/>`; });
+  const d0 = parseD(pts[0].date), d1 = parseD(pts[pts.length - 1].date);
+  s += `<text x="${L}" y="${H - 6}" text-anchor="start">${fCorta(d0)}</text><text x="${W - R}" y="${H - 6}" text-anchor="end">${fCorta(d1)}</text>`;
+  pts.forEach((_, i) => { s += `<rect class="hit" data-i="${i}" x="${x(i) - slot / 2}" y="0" width="${slot}" height="${H}"/>`; });
+  s += '</svg>';
+  box.innerHTML = s;
+  const r = pts[selRit];
+  $('#ro-rit').innerHTML = `<b>${fRitmo(p[selRit])} /km</b><span>${fFecha(r.date)} · ${fKm(r.km)} km</span>`;
+  box.querySelectorAll('.hit').forEach(h => h.addEventListener('click', () => { selRit = +h.dataset.i; chartRitmo(); }));
+}
+
+/* ---------- Datos / copia ---------- */
+function renderDatos() {
+  const t = agg(runs), lb = localStorage.getItem(KEY_BACKUP);
+  $('#datos-info').textContent = `Guardadas: ${t.n} ${t.n === 1 ? 'carrera' : 'carreras'} (${fKm1(t.km)} km).` +
+    (lb ? ` Última copia exportada: ${fFecha(lb)}.` : ' Aún no has exportado ninguna copia.');
+  $('#version').textContent = `${NOMBRE} · versión ${VERSION}`;
+}
+$('#btn-export').addEventListener('click', async () => {
+  if (!runs.length) return toast('No hay carreras que exportar');
+  const data = { app: 'correr', version: 1, exportado: new Date().toISOString(), carreras: sorted() };
+  const nombre = `${NOMBRE.toLowerCase().replace(/[^a-z0-9]+/gi, '-')}-copia-${hoy()}.json`;
+  const file = new File([JSON.stringify(data, null, 2)], nombre, { type: 'application/json' });
+  const movil = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  if (movil && navigator.canShare && navigator.canShare({ files: [file] })) {
+    try { await navigator.share({ files: [file], title: nombre }); localStorage.setItem(KEY_BACKUP, hoy()); renderDatos(); return; }
+    catch (e) { if (e.name === 'AbortError') return; }
+  }
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(file); a.download = nombre;
+  document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+  localStorage.setItem(KEY_BACKUP, hoy()); renderDatos(); toast('Copia exportada');
+});
+$('#btn-import').addEventListener('click', () => $('#file').click());
+function normaliza(r) {
+  if (!r || typeof r !== 'object') return null;
+  const o = {
+    id: String(r.id || uid()), date: String(r.date || r.fecha || ''),
+    km: numKm(r.km ?? r.distancia), sec: Number(r.sec ?? r.segundos),
+    tipo: TIPOS.includes(r.tipo) ? r.tipo : '', nota: String(r.nota || '').slice(0, 1000),
+    creado: Number(r.creado) || Date.now()
+  };
+  return valid(o) ? o : null;
+}
+$('#file').addEventListener('change', async e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  const fallo = t => modal({ title: 'No se pudo importar', text: t, buttons: [{ label: 'Vale', value: 1, cls: 'pri' }] });
+  let data; try { data = JSON.parse(await f.text()); } catch (err) { return fallo('El archivo no es un JSON válido.'); }
+  const arr = Array.isArray(data) ? data : (data && (data.carreras || data.runs));
+  if (!Array.isArray(arr)) return fallo('El archivo no parece una copia de esta app.');
+  const limpias = arr.map(normaliza).filter(Boolean);
+  if (!limpias.length) return fallo('No se encontró ninguna carrera válida en el archivo.');
+  const op = await modal({ title: 'Importar copia', text: `El archivo tiene ${limpias.length} ${limpias.length === 1 ? 'carrera' : 'carreras'}. Ahora tienes ${runs.length}.`,
+    buttons: [{ label: 'Añadir a las actuales', value: 'merge', cls: 'pri' }, { label: 'Reemplazar todo', value: 'replace', cls: 'danger' }, { label: 'Cancelar', value: null }] });
+  if (!op) return;
+  if (op === 'replace') runs = limpias;
+  else {
+    const firma = r => r.date + '|' + r.km + '|' + r.sec;
+    const ids = new Set(runs.map(r => r.id)), firmas = new Set(runs.map(firma));
+    let n = 0;
+    for (const r of limpias) if (!ids.has(r.id) && !firmas.has(firma(r))) { runs.push(r); n++; }
+    toast(n ? `${n} ${n === 1 ? 'carrera añadida' : 'carreras añadidas'}` : 'No había carreras nuevas');
+  }
+  save(); renderAll();
+  if (op === 'replace') toast('Datos reemplazados');
+});
+$('#btn-wipe').addEventListener('click', async () => {
+  if (!runs.length) return toast('No hay datos que borrar');
+  const ok = await modal({ title: '¿Borrar todo?', text: `Se borrarán tus ${runs.length} carreras de este móvil. Exporta antes una copia si quieres conservarlas.`,
+    buttons: [{ label: 'Borrar todo', value: true, cls: 'danger' }, { label: 'Cancelar', value: false }] });
+  if (ok) { runs = []; save(); renderAll(); toast('Datos borrados'); }
+});
+
+/* ---------- Formulario ---------- */
+let editId = null, tipoSel = '';
+const F = { date: $('#f-date'), km: $('#f-km'), h: $('#f-h'), m: $('#f-m'), s: $('#f-s'), nota: $('#f-nota') };
+$('#f-tipos').innerHTML = TIPOS.map(t => `<button type="button" class="chip" data-t="${t}">${t}</button>`).join('');
+$('#f-tipos').addEventListener('click', e => {
+  const b = e.target.closest('.chip'); if (!b) return;
+  tipoSel = tipoSel === b.dataset.t ? '' : b.dataset.t; pintaTipos();
+});
+const pintaTipos = () => $$('#f-tipos .chip').forEach(c => c.classList.toggle('on', c.dataset.t === tipoSel));
+const segs = () => (parseInt(F.h.value || 0, 10) * 3600) + (parseInt(F.m.value || 0, 10) * 60) + parseInt(F.s.value || 0, 10);
+function preview() {
+  const km = numKm(F.km.value), sec = segs();
+  const ok = km > 0 && sec > 0;
+  $('#p-pace').textContent = ok ? fRitmo(sec / km) + ' /km' : '–';
+  $('#p-speed').textContent = ok ? fVel(km, sec) + ' km/h' : '–';
+}
+F.km.addEventListener('input', () => { F.km.value = F.km.value.replace(/[^0-9.,]/g, ''); preview(); });
+[F.h, F.m, F.s].forEach((inp, i, arr) => inp.addEventListener('input', () => {
+  inp.value = inp.value.replace(/\D/g, '').slice(0, 2);
+  if (inp.value.length === 2 && arr[i + 1]) arr[i + 1].focus();
+  preview();
+}));
+F.km.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); F.h.focus(); } });
+
+const sheet = $('#sheet');
+function openForm(r) {
+  editId = r ? r.id : null;
+  $('#f-title').textContent = r ? 'Editar carrera' : 'Nueva carrera';
+  F.date.value = r ? r.date : hoy();
+  F.km.value = r ? String(r.km).replace('.', ',') : '';
+  if (r) { const t = Math.round(r.sec); F.h.value = Math.floor(t / 3600) || ''; F.m.value = pad(Math.floor(t % 3600 / 60)); F.s.value = pad(t % 60); }
+  else { F.h.value = F.m.value = F.s.value = ''; }
+  F.nota.value = r ? (r.nota || '') : '';
+  tipoSel = r ? (r.tipo || '') : ''; pintaTipos();
+  $('#f-err').textContent = '';
+  preview();
+  sheet.querySelector('.sheet-body').scrollTop = 0;
+  sheet.classList.add('open'); sheet.setAttribute('aria-hidden', 'false');
+  history.pushState({ sheet: 1 }, '');
+}
+function closeForm(fromPop) {
+  if (!sheet.classList.contains('open')) return;
+  document.activeElement && document.activeElement.blur();
+  sheet.classList.remove('open'); sheet.setAttribute('aria-hidden', 'true');
+  if (!fromPop && history.state && history.state.sheet) history.back();
+}
+window.addEventListener('popstate', () => closeForm(true));
+$('#btn-add').addEventListener('click', () => openForm());
+$('#f-close').addEventListener('click', () => closeForm());
+$('#form').addEventListener('submit', e => {
+  e.preventDefault();
+  const err = t => { $('#f-err').textContent = t; };
+  const date = F.date.value, km = numKm(F.km.value);
+  const m = parseInt(F.m.value || 0, 10), s = parseInt(F.s.value || 0, 10), sec = segs();
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return err('Indica la fecha.');
+  if (!(km > 0)) return err('Indica la distancia en km (por ejemplo 10,5).');
+  if (km > 500) return err('La distancia parece demasiado grande.');
+  if (m > 59 || s > 59) return err('Los minutos y segundos deben ir de 0 a 59.');
+  if (!(sec > 0)) return err('Indica el tiempo total.');
+  const datos = { date, km: Math.round(km * 1000) / 1000, sec, tipo: tipoSel, nota: F.nota.value.trim() };
+  if (editId) { const r = runs.find(x => x.id === editId); if (r) Object.assign(r, datos); }
+  else runs.push({ id: uid(), creado: Date.now(), ...datos });
+  save(); renderAll(); closeForm();
+  toast(editId ? 'Cambios guardados' : 'Carrera guardada');
+});
+
+/* ---------- Modal y aviso ---------- */
+function modal({ title, text, buttons }) {
+  return new Promise(res => {
+    const box = $('#modal');
+    $('#m-title').textContent = title; $('#m-text').textContent = text || '';
+    $('#m-btns').innerHTML = buttons.map((b, i) => `<button class="btn ${b.cls || ''}" data-i="${i}">${esc(b.label)}</button>`).join('');
+    const fin = v => { box.classList.remove('open'); box.onclick = null; res(v); };
+    box.onclick = e => {
+      const b = e.target.closest('[data-i]');
+      if (b) fin(buttons[+b.dataset.i].value); else if (e.target === box) fin(null);
+    };
+    box.classList.add('open');
+  });
+}
+let toastT;
+function toast(t) { const el = $('#toast'); el.textContent = t; el.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove('show'), 2200); }
+
+/* ---------- Comportamiento móvil ---------- */
+// Sin zoom con gestos (iOS ignora user-scalable en algunas versiones)
+['gesturestart', 'gesturechange'].forEach(ev => document.addEventListener(ev, e => e.preventDefault(), { passive: false }));
+document.addEventListener('touchmove', e => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
+// Evitar que la pantalla quede desplazada al cerrar el teclado
+document.addEventListener('focusout', () => setTimeout(() => {
+  const a = document.activeElement;
+  if (!a || !a.matches('input,textarea')) window.scrollTo(0, 0);
+}, 60));
+// Bloquear orientación cuando el navegador lo permite (Android instalada)
+try { screen.orientation && screen.orientation.lock && screen.orientation.lock('portrait').catch(() => {}); } catch (e) {}
+
+/* ---------- Inicio ---------- */
+function renderAll() {
+  renderResumen(); renderHistorial(); renderRecords(); renderDatos();
+  if (vista === 'graficas') renderGraficas();
+}
+renderAll();
+setTimeout(() => { const sp = $('#splash'); sp.classList.add('hide'); setTimeout(() => sp.remove(), 400); }, 1100);
+window.addEventListener('storage', e => { if (e.key === KEY) { runs = load(); renderAll(); } });
+
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
+}
+</script>
+</body>
+</html>
