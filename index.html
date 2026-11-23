@@ -247,6 +247,12 @@ textarea.inp{min-height:96px;padding:14px 16px;font-size:17px;font-weight:500;re
         <input type="file" id="file" accept="application/json,.json" class="hidden">
       </div>
       <div class="card">
+        <div class="card-h" style="margin-bottom:8px"><span>Pegar carreras</span></div>
+        <p class="muted" style="margin-bottom:10px">Una carrera por línea: fecha; km; tiempo; tipo; nota (tipo y nota opcionales).<br>Ejemplo: <b>23/11/2026; 1,62; 0:11:09; Series</b></p>
+        <textarea class="inp" id="pegar-txt" rows="4" placeholder="Pega aquí tus carreras" style="font-size:16px;margin-bottom:10px"></textarea>
+        <button class="btn pri" id="btn-pegar">Añadir carreras</button>
+      </div>
+      <div class="card">
         <div class="card-h" style="margin-bottom:8px"><span>Importar desde Salud (iPhone)</span></div>
         <p class="muted" style="margin-bottom:10px">Trae las carreras que registraste con el Apple Watch o la app Fitness.</p>
         <ol class="muted" style="margin:0 0 16px;padding-left:20px;line-height:1.5">
@@ -333,7 +339,7 @@ textarea.inp{min-height:96px;padding:14px 16px;font-size:17px;font-weight:500;re
    edita solo ese archivo. Este valor es únicamente el de reserva.
    ===================================================================== */
 const NOMBRE_RESERVA = 'Zancada';
-const VERSION = '1.2.0';
+const VERSION = '1.3.0';
 
 const KEY = 'correr.carreras.v1';
 const KEY_BACKUP = 'correr.ultimaCopia';
@@ -758,6 +764,53 @@ async function importarSalud(file) {
 }
 $('#btn-salud').addEventListener('click', () => $('#file-salud').click());
 $('#file-salud').addEventListener('change', e => { const f = e.target.files[0]; e.target.value = ''; if (f) importarSalud(f); });
+
+/* ---------- Pegar carreras en texto ---------- */
+function parseTiempo(t) {
+  const p = String(t).trim().split(/[:.']/).map(x => parseInt(x, 10));
+  if (p.some(isNaN) || !p.length) return NaN;
+  return p.length === 3 ? p[0] * 3600 + p[1] * 60 + p[2] : p.length === 2 ? p[0] * 60 + p[1] : p[0] * 60;
+}
+function parseFecha(f) {
+  f = String(f).trim();
+  let m = f.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/); if (m) return m[1] + '-' + pad(+m[2]) + '-' + pad(+m[3]);
+  m = f.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{2,4})/);
+  if (m) { const y = m[3].length === 2 ? '20' + m[3] : m[3]; return y + '-' + pad(+m[2]) + '-' + pad(+m[1]); }
+  if (/^hoy$/i.test(f)) return hoy();
+  return '';
+}
+function parseTexto(txt) {
+  const t = txt.trim();
+  if (t.startsWith('{') || t.startsWith('[')) {
+    try { const d = JSON.parse(t); const a = Array.isArray(d) ? d : (d.carreras || d.runs || [d]); return { ok: a.map(normaliza).filter(Boolean), mal: [] }; } catch (e) {}
+  }
+  const ok = [], mal = [];
+  t.split(/\r?\n/).map(l => l.trim()).filter(Boolean).forEach(l => {
+    const c = l.split(/\s*[;|\t]\s*/);
+    const tipo = TIPOS.find(x => x.toLowerCase() === String(c[3] || '').trim().toLowerCase()) || '';
+    const o = { id: uid(), date: parseFecha(c[0]), km: Math.round(numKm(String(c[1] || '').replace(/km/i, '')) * 1000) / 1000,
+      sec: parseTiempo(c[2] || ''), tipo, nota: (c.slice(tipo ? 4 : 3).join('; ') || '').trim().slice(0, 1000), creado: Date.now() + ok.length };
+    valid(o) ? ok.push(o) : mal.push(l);
+  });
+  return { ok, mal };
+}
+$('#btn-pegar').addEventListener('click', async () => {
+  const ta = $('#pegar-txt');
+  if (!ta.value.trim() && navigator.clipboard && navigator.clipboard.readText) {
+    try { ta.value = await navigator.clipboard.readText(); } catch (e) {}
+  }
+  if (!ta.value.trim()) return toast('Pega primero alguna carrera');
+  const { ok, mal } = parseTexto(ta.value);
+  const firma = r => r.date + '|' + Math.round(r.km * 10) + '|' + Math.round(r.sec / 60);
+  const firmas = new Set(runs.map(firma));
+  const nuevas = ok.filter(r => !firmas.has(firma(r)));
+  if (!nuevas.length) return modal({ title: 'Nada que añadir', text: (ok.length ? 'Esas carreras ya estaban guardadas.' : 'No he entendido ninguna línea.') + (mal.length ? `\nLíneas no válidas: ${mal.length}` : ''), buttons: [{ label: 'Vale', value: 1, cls: 'pri' }] });
+  const res = await modal({ title: 'Añadir carreras', text: nuevas.map(r => `${fFecha(r.date)} · ${fKm(r.km)} km · ${fDur(r.sec)}${r.tipo ? ' · ' + r.tipo : ''}`).join('\n') + (mal.length ? `\n\nNo he entendido ${mal.length} ${mal.length === 1 ? 'línea' : 'líneas'}.` : ''),
+    buttons: [{ label: `Añadir ${nuevas.length}`, value: true, cls: 'pri' }, { label: 'Cancelar', value: false }] });
+  if (!res) return;
+  runs.push(...nuevas); save(); renderAll(); ta.value = '';
+  toast(`${nuevas.length} ${nuevas.length === 1 ? 'carrera añadida' : 'carreras añadidas'}`);
+});
 
 /* ---------- Formulario ---------- */
 let editId = null, tipoSel = '';
