@@ -1,7 +1,7 @@
 /* Service worker: guarda la app para que funcione sin conexión.
    Si cambias index.html o manifest.webmanifest, sube el número de CACHE
    para que los móviles descarguen la versión nueva. */
-const CACHE = 'correr-v4';
+const CACHE = 'correr-v5';
 const ARCHIVOS = ['./', './index.html', './manifest.webmanifest'];
 
 self.addEventListener('install', e => {

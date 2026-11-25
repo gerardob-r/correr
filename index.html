@@ -167,6 +167,9 @@ textarea.inp{min-height:96px;padding:14px 16px;font-size:17px;font-weight:500;re
 .preview div{background:var(--card);border-radius:16px;padding:12px 16px}
 .preview small{display:block;color:var(--mu);font-size:13px;font-weight:600}
 .preview b{font-size:24px;font-variant-numeric:tabular-nums}
+.btn.foto{min-height:50px;font-size:16px;background:var(--card2)}
+.btn.foto .ico{width:22px;height:22px;flex:none}
+.btn.foto:disabled{opacity:.5}
 .err{color:var(--bad);font-size:15px;font-weight:600;margin:0 4px 14px;min-height:0}
 
 /* ---------- Modal y toast ---------- */
@@ -247,6 +250,11 @@ textarea.inp{min-height:96px;padding:14px 16px;font-size:17px;font-weight:500;re
         <input type="file" id="file" accept="application/json,.json" class="hidden">
       </div>
       <div class="card">
+        <div class="card-h" style="margin-bottom:8px"><span>Desde una captura</span></div>
+        <p class="muted" style="margin-bottom:10px">Sube una o varias capturas del entreno (Fitness, Strava, Garmin…) y la app rellena la fecha, la distancia, el tiempo y los parciales. Revisa los datos antes de guardar.</p>
+        <button class="btn pri" id="btn-foto-datos">Elegir capturas</button>
+      </div>
+      <div class="card">
         <div class="card-h" style="margin-bottom:8px"><span>Pegar carreras</span></div>
         <p class="muted" style="margin-bottom:10px">Una carrera por línea: fecha; km; tiempo; tipo; nota (tipo y nota opcionales).<br>Ejemplo: <b>23/11/2026; 1,62; 0:11:09; Series</b></p>
         <textarea class="inp" id="pegar-txt" rows="4" placeholder="Pega aquí tus carreras" style="font-size:16px;margin-bottom:10px"></textarea>
@@ -294,6 +302,10 @@ textarea.inp{min-height:96px;padding:14px 16px;font-size:17px;font-weight:500;re
   </div>
   <div class="sheet-body">
     <form id="form" autocomplete="off" novalidate>
+      <button type="button" class="btn foto" id="btn-foto">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4zM12 16.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/></svg>Rellenar desde una captura</button>
+      <input type="file" id="file-foto" accept="image/*" multiple class="hidden">
+      <p class="note-s" id="foto-prog" style="margin:8px 4px 16px"></p>
       <div class="field">
         <label for="f-date">Fecha</label>
         <input class="inp" type="date" id="f-date" required>
@@ -339,7 +351,7 @@ textarea.inp{min-height:96px;padding:14px 16px;font-size:17px;font-weight:500;re
    edita solo ese archivo. Este valor es únicamente el de reserva.
    ===================================================================== */
 const NOMBRE_RESERVA = 'Zancada';
-const VERSION = '1.3.0';
+const VERSION = '1.4.0';
 
 const KEY = 'correr.carreras.v1';
 const KEY_BACKUP = 'correr.ultimaCopia';
@@ -846,7 +858,7 @@ function openForm(r) {
   else { F.h.value = F.m.value = F.s.value = ''; }
   F.nota.value = r ? (r.nota || '') : '';
   tipoSel = r ? (r.tipo || '') : ''; pintaTipos();
-  $('#f-err').textContent = '';
+  $('#f-err').textContent = ''; $('#foto-prog').textContent = '';
   preview();
   sheet.querySelector('.sheet-body').scrollTop = 0;
   sheet.classList.add('open'); sheet.setAttribute('aria-hidden', 'false');
@@ -877,6 +889,126 @@ $('#form').addEventListener('submit', e => {
   save(); renderAll(); closeForm();
   toast(editId ? 'Cambios guardados' : 'Carrera guardada');
 });
+
+/* ---------- Leer datos de capturas (OCR) ---------- */
+const MESES = { ene: 1, jan: 1, feb: 2, mar: 3, abr: 4, apr: 4, may: 5, jun: 6, jul: 7, ago: 8, aug: 8, sep: 9, set: 9, oct: 10, nov: 11, dic: 12, dec: 12 };
+function hmsASeg(t) {
+  const p = t.split(':').map(Number);
+  return p.length === 3 ? p[0] * 3600 + p[1] * 60 + p[2] : p[0] * 60 + p[1];
+}
+// Devuelve lo que entiende de un texto leído de una captura: fecha, km, sec y parciales.
+function parseCaptura(texto) {
+  const t = texto.replace(/[’‘′`´]/g, "'").replace(/[”“″]|''/g, '"').replace(/\r/g, '');
+  const lin = t.split('\n').map(l => l.trim()).filter(Boolean);
+  const out = { date: '', km: 0, sec: 0, parciales: [] };
+  // Fecha: "25 de noviembre de 2026", "25 nov 2026", "25/11/2026", "2026-11-25"
+  let m = t.match(/\b(\d{1,2})\s*(?:de\s+)?([a-záéíóú]{3,})\.?\s*(?:de\s+)?(\d{4})\b/i);
+  if (m && MESES[m[2].slice(0, 3).toLowerCase()]) out.date = m[3] + '-' + pad(MESES[m[2].slice(0, 3).toLowerCase()]) + '-' + pad(+m[1]);
+  else if ((m = t.match(/\b(\d{1,2})[\/.-](\d{1,2})[\/.-](20\d{2})\b/))) out.date = m[3] + '-' + pad(+m[2]) + '-' + pad(+m[1]);
+  else if ((m = t.match(/\b(20\d{2})-(\d{2})-(\d{2})\b/))) out.date = m[1] + '-' + m[2] + '-' + m[3];
+  // Parciales: "1 06:19 6' 19" /KM 150 PPM"
+  for (const l of lin) {
+    const p = l.match(/^(\d{1,2})\s+((?:\d{1,2}:)?\d{1,2}:\d{2})\s+(\d{1,2})\s*'\s*(\d{2})/);
+    if (!p) continue;
+    const c = l.match(/(\d{2,3})\s*(?:ppm|spm)/i);
+    out.parciales.push({ n: +p[1], sec: hmsASeg(p[2]), ritmo: +p[3] * 60 + +p[4], ppm: c ? +c[1] : 0 });
+  }
+  // Distancia: "5,02 KM" (no "/KM", que es ritmo)
+  for (let i = 0; i < lin.length && !out.km; i++) {
+    const d = lin[i].match(/(?:^|[^\/\d])(\d{1,3}[.,]\d{1,2})\s*km\b/i);
+    if (d) out.km = numKm(d[1]);
+    else if (/^distancia$/i.test(lin[i]) && lin[i + 1] && (m = lin[i + 1].match(/^(\d{1,3}(?:[.,]\d{1,2})?)/))) out.km = numKm(m[1]);
+  }
+  // Tiempo total: tras "Tiempo de entrenamiento", "Tiempo total", "Duración"…; si no, el h:mm:ss más largo
+  const ETQ = /(tiempo\s+(de\s+entrenamiento|total|en\s+movimiento|transcurrido)|duraci[oó]n|workout\s+time|moving\s+time|elapsed\s+time)/i;
+  for (let i = 0; i < lin.length && !out.sec; i++) {
+    if (!ETQ.test(lin[i])) continue;
+    const s = (lin[i] + ' ' + (lin[i + 1] || '')).match(/\b(\d{1,2}:\d{2}:\d{2}|\d{1,3}:\d{2})\b/);
+    if (s) out.sec = hmsASeg(s[1]);
+  }
+  if (!out.sec) { const s = t.match(/\b\d{1,2}:\d{2}:\d{2}\b/g); if (s) out.sec = Math.max(...s.map(hmsASeg)); }
+  return out;
+}
+// Junta lo leído de varias capturas y completa distancia y tiempo con los parciales si faltan.
+function juntaCapturas(lista) {
+  const r = { date: '', km: 0, sec: 0, parciales: [] };
+  for (const o of lista) {
+    r.date = r.date || o.date; r.km = r.km || o.km; r.sec = r.sec || o.sec;
+    if (o.parciales.length > r.parciales.length) r.parciales = o.parciales;
+  }
+  const p = r.parciales.sort((a, b) => a.n - b.n);
+  if (p.length) {
+    const total = p.reduce((a, x) => a + x.sec, 0);
+    // Todos los parciales son de 1 km salvo quizá el último, cuya distancia sale de tiempo / ritmo
+    const ult = p[p.length - 1];
+    const kmParc = p.length - 1 + (ult.ritmo ? Math.min(1, ult.sec / ult.ritmo) : 1);
+    if (!r.sec) r.sec = total;
+    if (!r.km) r.km = Math.round(kmParc * 100) / 100;
+  }
+  return r;
+}
+// Tesseract.js (OCR) se descarga solo la primera vez que se usa.
+const TESS_URL = 'https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';
+let ocrWorker = null;
+function cargaScript(src) {
+  return new Promise((ok, ko) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = ko; document.head.appendChild(s); });
+}
+async function dameOcr(onProg) {
+  if (!window.Tesseract) await cargaScript(TESS_URL);
+  if (!ocrWorker) ocrWorker = await Tesseract.createWorker('spa', 1, { logger: m => m.status === 'recognizing text' && onProg && onProg(m.progress) });
+  return ocrWorker;
+}
+// Pasa la imagen a gris, la invierte si es oscura y estira el contraste: el OCR lee mucho mejor texto oscuro sobre blanco.
+async function preparaImagen(file) {
+  const img = await createImageBitmap(file);
+  const esc = Math.min(2, Math.max(1, 1400 / img.width));
+  const c = document.createElement('canvas'); c.width = Math.round(img.width * esc); c.height = Math.round(img.height * esc);
+  const x = c.getContext('2d'); x.drawImage(img, 0, 0, c.width, c.height);
+  const d = x.getImageData(0, 0, c.width, c.height), p = d.data;
+  let suma = 0;
+  for (let i = 0; i < p.length; i += 4) { const g = 0.299 * p[i] + 0.587 * p[i + 1] + 0.114 * p[i + 2]; p[i] = g; suma += g; }
+  const oscura = suma / (p.length / 4) < 128;
+  let min = 255, max = 0;
+  for (let i = 0; i < p.length; i += 4) { const g = oscura ? 255 - p[i] : p[i]; p[i] = g; if (g < min) min = g; if (g > max) max = g; }
+  const k = 255 / Math.max(1, max - min);
+  for (let i = 0; i < p.length; i += 4) { const g = (p[i] - min) * k; p[i] = p[i + 1] = p[i + 2] = g; }
+  x.putImageData(d, 0, 0);
+  return c;
+}
+async function leerCapturas(files) {
+  const prog = $('#foto-prog'), btn = $('#btn-foto');
+  btn.disabled = true;
+  const lista = [];
+  try {
+    for (let i = 0; i < files.length; i++) {
+      const pre = files.length > 1 ? `Captura ${i + 1} de ${files.length}: ` : '';
+      prog.textContent = pre + 'preparando…';
+      const w = await dameOcr(v => { prog.textContent = pre + `leyendo… ${Math.round(v * 100)} %`; });
+      const { data } = await w.recognize(await preparaImagen(files[i]));
+      lista.push(parseCaptura(data.text));
+    }
+  } catch (e) {
+    prog.textContent = '';
+    btn.disabled = false;
+    return modal({ title: 'No se pudo leer la captura', text: navigator.onLine === false ? 'La primera vez necesitas conexión a internet para descargar el lector de texto.' : 'Ha fallado la lectura de la imagen. Prueba con otra captura.', buttons: [{ label: 'Vale', value: 1, cls: 'pri' }] });
+  }
+  btn.disabled = false;
+  const r = juntaCapturas(lista);
+  const hay = [];
+  if (r.date) { F.date.value = r.date; hay.push('fecha'); }
+  if (r.km > 0) { F.km.value = String(r.km).replace('.', ','); hay.push('distancia'); }
+  if (r.sec > 0) { const t = Math.round(r.sec); F.h.value = Math.floor(t / 3600) || ''; F.m.value = pad(Math.floor(t % 3600 / 60)); F.s.value = pad(t % 60); hay.push('tiempo'); }
+  if (r.parciales.length) {
+    hay.push(r.parciales.length + ' parciales');
+    if (!F.nota.value.trim()) F.nota.value = 'Parciales: ' + r.parciales.map(p => `${p.n}) ${fDur(p.sec)} (${fRitmo(p.ritmo)}/km${p.ppm ? ' · ' + p.ppm + ' ppm' : ''})`).join(', ');
+  }
+  preview();
+  if (!hay.length) { prog.textContent = ''; return modal({ title: 'No he encontrado datos', text: 'No he sabido leer distancia, tiempo ni parciales en esa imagen. Prueba con la pantalla de resumen o la de parciales del entreno.', buttons: [{ label: 'Vale', value: 1, cls: 'pri' }] }); }
+  prog.textContent = 'He leído: ' + hay.join(', ') + '.' + (r.date ? '' : ' No veo la fecha, revisa que sea correcta.') + ' Comprueba los datos antes de guardar.';
+}
+$('#btn-foto').addEventListener('click', () => $('#file-foto').click());
+$('#file-foto').addEventListener('change', e => { const f = [...e.target.files]; e.target.value = ''; if (f.length) leerCapturas(f); });
+$('#btn-foto-datos').addEventListener('click', () => { go('historial'); openForm(); $('#file-foto').click(); });
 
 /* ---------- Modal y aviso ---------- */
 function modal({ title, text, buttons }) {
